@@ -64,6 +64,7 @@ close(Pid) ->
 
 init([Mod,Host,Port,Path]) ->
     ModState = Mod:ws_init(),
+    ssl:start(),
     {ok, #state{server={Host,Port,Path},
                 callback=Mod, callback_state=ModState}, 0}.
 
