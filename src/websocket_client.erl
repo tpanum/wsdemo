@@ -82,11 +82,10 @@ handle_cast(close,State) ->
 handle_info(timeout, #state{server={Host,Port,Path}} = State) ->
     
     case ssl:connect(Host,Port,
-                         [binary,{packet, 0},{active,true}], 2000) of
+                         [binary,{active,true}], 2000) of
         {ok, Sock} ->
             Req = initial_request(),
             ok = ssl:send(Sock,Req),
-            inet:setopts(Sock, [{packet, 0}]),
             {noreply, State#state{socket=Sock}};
         {error, timeout} ->
             {stop, connection_timeout, State}
