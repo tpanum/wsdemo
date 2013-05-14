@@ -56,7 +56,7 @@ write(Pid, Data) ->
 
 write_sync(ClientState, Data) ->
     Frame = frame(Data),
-    gen_tcp:send(ClientState#state.socket, Frame).
+    ssl:send(ClientState#state.socket, Frame).
 
 %% Close the socket
 close(Pid) ->
@@ -73,18 +73,18 @@ handle_cast({send,Data}, State) ->
 handle_cast(close,State) ->
     Mod = State#state.callback,
     CBState = Mod:ws_onclose(State, normal, State#state.callback_state),
-    gen_tcp:close(State#state.socket),
+    ssl:close(State#state.socket),
     State1 = State#state{readystate=?CLOSED, callback_state=CBState},
     {stop,normal,State1}.
 
 %% Start handshake
 handle_info(timeout, #state{server={Host,Port,Path}} = State) ->
     
-    case gen_tcp:connect(Host,Port,
-                         [binary,{packet, http},{active,true}], 2000) of
+    case ssl:connect(Host,Port,
+                         [binary,{packet, 0},{active,true}], 2000) of
         {ok, Sock} ->
-            Req = initial_request(Host,Path),
-            ok = gen_tcp:send(Sock,Req),
+            Req = initial_request(),
+            ok = ssl:send(Sock,Req),
             inet:setopts(Sock, [{packet, http}]),
             {noreply, State#state{socket=Sock}};
         {error, timeout} ->
@@ -154,7 +154,7 @@ handle_info(Msg, State) ->
     {noreply, State#state{callback_state=CBState}}.
   
 handle_call(stop, _From, State) ->
-    gen_tcp:close(State#state.socket),
+    ssl:close(State#state.socket),
     {stop, normal, ok, State};
 handle_call(_Request,_From,State) ->
     {reply,ok,State}.
@@ -168,12 +168,8 @@ code_change(_OldVsn, State, _Extra) ->
 %%--------------------------------------------------------------------
 %%% Internal functions
 %%--------------------------------------------------------------------
-initial_request(Host,Path) ->
-    "GET "++ Path ++" HTTP/1.1\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n" ++ 
-    "Host: " ++ Host ++ "\r\n" ++
-    "Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==\r\n" ++
-    "Sec-WebSocket-Version: 13\r\n" ++
-    "Origin: http://" ++ Host ++ "/\r\n\r\n".
+initial_request() ->
+    "{\"command\":\"login\",\"params\":{\"username\":\"bjarke\",\"password\":\"1235\"},\"auth\":\"\",\"timestamp\":\"hdsnakdjakfn\"}\r\n".
 
 %% not enough data for a complete frame
 unframe(Data) when byte_size(Data) =:= 1 ->
