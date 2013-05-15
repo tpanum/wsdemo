@@ -7,7 +7,7 @@
 %% http://dev.w3.org/html5/websockets/
 %% However, it's not completely compliant with the WebSocket spec.
 %% Specifically it doesn't handle the case where 'length' is included
-%% in the TCP packet, SSL is not supported, and you don't pass a 'ws://type url to it.
+%% in the ssl packet, SSL is not supported, and you don't pass a 'ws://type url to it.
 %%
 %% It also defines a behaviour to implement for client implementations.
 %% @author Dave Bryson [http://weblog.miceda.org]
@@ -128,7 +128,7 @@ handle_info({http,Socket,http_eoh},State) ->
             {stop,{error, {http_eoh, unexpected_readystate, Other}},State}
     end;
 %% Handshake complete, handle packets
-handle_info({tcp, _Socket, Data}, #state{callback=Mod, sofar=SoFar} = State) ->
+handle_info({ssl, _Socket, Data}, #state{callback=Mod, sofar=SoFar} = State) ->
     case State#state.readystate of
         ?OPEN ->
             State2 = case unframe(<<SoFar/bits, Data/bits>>) of
@@ -140,14 +140,14 @@ handle_info({tcp, _Socket, Data}, #state{callback=Mod, sofar=SoFar} = State) ->
                      end,
             {noreply, State2};
         Other ->
-            {stop,{error, {tcp_data, unexpected_readystate, {Other, Data}}},State}
+            {stop,{error, {ssl_data, unexpected_readystate, {Other, Data}}},State}
     end;
-handle_info({tcp_closed, _Socket},State) ->
+handle_info({ssl_closed, _Socket},State) ->
     Mod = State#state.callback,
-    CBState = Mod:ws_onclose(State, tcp_closed, State#state.callback_state),
+    CBState = Mod:ws_onclose(State, ssl_closed, State#state.callback_state),
     {stop,normal,State#state{callback_state=CBState}};
-handle_info({tcp_error, _Socket, _Reason},State) ->
-    {stop,tcp_error,State};
+handle_info({ssl_error, _Socket, _Reason},State) ->
+    {stop,ssl_error,State};
 handle_info(Msg, State) ->
     Mod = State#state.callback,
     CBState = Mod:ws_info(State, Msg, State#state.callback_state),
