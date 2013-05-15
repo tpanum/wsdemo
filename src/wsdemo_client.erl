@@ -42,6 +42,7 @@ handle_msg(_Client, {binary, <<"ref:",RefBin/bits>>}, State) ->
     State;
 handle_msg(_Client, Msg = {Type, TM}, State) ->
     M = binary_to_list(TM),
+    io:format("~p", [M]),
     {match, [_, {Start, End}]} = re:run(M, "p\":\"([0-9]+)\"", []),
     Ref = string:sub_string(M, Start+1, Start+End),
     wsdemo_logger:event({recv_message, self(), Ref}),
