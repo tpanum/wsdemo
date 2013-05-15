@@ -1,0 +1,77 @@
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,sasl_safe_sup}
+             started: [{pid,<0.37.0>},
+                       {name,alarm_handler},
+                       {mfargs,{alarm_handler,start_link,[]}},
+                       {restart_type,permanent},
+                       {shutdown,2000},
+                       {child_type,worker}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,sasl_safe_sup}
+             started: [{pid,<0.38.0>},
+                       {name,overload},
+                       {mfargs,{overload,start_link,[]}},
+                       {restart_type,permanent},
+                       {shutdown,2000},
+                       {child_type,worker}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,sasl_sup}
+             started: [{pid,<0.36.0>},
+                       {name,sasl_safe_sup},
+                       {mfargs,
+                           {supervisor,start_link,
+                               [{local,sasl_safe_sup},sasl,safe]}},
+                       {restart_type,permanent},
+                       {shutdown,infinity},
+                       {child_type,supervisor}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,sasl_sup}
+             started: [{pid,<0.39.0>},
+                       {name,release_handler},
+                       {mfargs,{release_handler,start_link,[]}},
+                       {restart_type,permanent},
+                       {shutdown,2000},
+                       {child_type,worker}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+         application: sasl
+          started_at: nonode@nohost
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,wsdemo_bench_sup}
+             started: [{pid,<0.47.0>},
+                       {name,wsdemo_server_manager},
+                       {mfargs,{wsdemo_server_manager,start_link,[]}},
+                       {restart_type,permanent},
+                       {shutdown,5000},
+                       {child_type,worker}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,wsdemo_bench_sup}
+             started: [{pid,<0.48.0>},
+                       {name,wsdemo_master_fsm},
+                       {mfargs,{wsdemo_master_fsm,start_link,[]}},
+                       {restart_type,permanent},
+                       {shutdown,5000},
+                       {child_type,worker}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+         application: wsdemo_bench
+          started_at: nonode@nohost
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,inet_gethost_native_sup}
+             started: [{pid,<0.52.0>},{mfa,{inet_gethost_native,init,[[]]}}]
+
+=PROGRESS REPORT==== 15-May-2013::03:41:03 ===
+          supervisor: {local,kernel_safe_sup}
+             started: [{pid,<0.51.0>},
+                       {name,inet_gethost_native_sup},
+                       {mfargs,{inet_gethost_native,start_link,[]}},
+                       {restart_type,temporary},
+                       {shutdown,1000},
+                       {child_type,worker}]

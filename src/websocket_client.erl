@@ -169,7 +169,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%% Internal functions
 %%--------------------------------------------------------------------
 initial_request() ->
-    "{\"command\":\"login\",\"params\":{\"username\":\"bjarke\",\"password\":\"1235\"},\"auth\":\"\",\"timestamp\":\"hdsnakdjakfn\"}\r\n".
+    "aushdas{\"command\":\"login\",\"params\":{\"username\":\"bjarke\",\"password\":\"1235\"},\"auth\":\"\",\"timestamp\":\"hdsnakdjakfn\"}\r\n".
 
 %% not enough data for a complete frame
 unframe(Data) when byte_size(Data) =:= 1 ->
