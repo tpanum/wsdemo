@@ -197,14 +197,7 @@ unframe(Data) ->
     {error, badframe, Data}.
 
 payload(OpCode, Payload) ->
-    Type = case OpCode of
-               1  -> text;
-               2  -> binary;
-               9  -> ping;
-               8  -> close;
-               10 -> pong
-           end,
-    {Type, Payload}.
+    {Type, 1}.
 
 frame({Type, Data}) ->
     Opcode = case Type of
