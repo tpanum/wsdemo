@@ -86,7 +86,7 @@ handle_info(timeout, #state{server={Host,Port,Path}} = State) ->
         {ok, Sock} ->
             Req = initial_request(),
             ok = ssl:send(Sock,Req),
-            {noreply, State#state{socket=Sock}};
+            {noreply, State#state{readystate=?CONNECTING,socket=Sock}};
         {error, timeout} ->
             {stop, connection_timeout, State}
     end;
