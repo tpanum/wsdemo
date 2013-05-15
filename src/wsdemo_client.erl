@@ -41,7 +41,10 @@ handle_msg(_Client, {binary, <<"ref:",RefBin/bits>>}, State) ->
     wsdemo_logger:event({recv_message, self(), Ref}),
     State;
 handle_msg(_Client, Msg, State) ->
-    error_logger:warning_msg("Unmatched msg: ~p~n", [Msg]),
+    M = binary_to_list(Msg),
+    {match, [_, {Start, End}]} = re:run(M, "p\":\"([0-9]+)\"", []),
+    Ref = string:sub_string(M, Start+1, Start+End),
+    wsdemo_logger:event({recv_message, self(), Ref}),
     State.
 
 ws_info(Client, {timeout, _Ref, send_ping}, State) ->

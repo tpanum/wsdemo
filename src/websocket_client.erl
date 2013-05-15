@@ -168,7 +168,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%--------------------------------------------------------------------
 %%% Internal functions
 %%--------------------------------------------------------------------
-initial_request(Timestamp) ->
+initial_request() ->
     {_, _, MicroSecs} = erlang:now(),
     io_lib:format("aushdas{\"command\":\"login\",\"params\":{\"username\":\"bjarke\",\"password\":\"1235\"},\"auth\":\"\",\"timestamp\":\"~p\"}\r\n", [MicroSecs]).
 
