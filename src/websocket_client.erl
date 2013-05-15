@@ -133,7 +133,7 @@ handle_info({ssl, _Socket, Data}, #state{callback=Mod, sofar=SoFar} = State) ->
         ?OPEN ->
             State2 = case unframe(<<SoFar/bits, Data/bits>>) of
                          {ok, Frame, SoFar2} ->
-                             CBState = Mod:ws_onmessage(State, Frame, State#state.callback_state),
+                             CBState = Mod:ws_onmessage(State, Data, State#state.callback_state),
                              State#state{callback_state=CBState, sofar=SoFar2};
                          {continue, SoFar2} ->
                              State#state{sofar=SoFar2}
