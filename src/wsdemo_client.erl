@@ -41,7 +41,7 @@ handle_msg(_Client, {binary, <<"ref:",RefBin/bits>>}, State) ->
     wsdemo_logger:event({recv_message, self(), Ref}),
     State;
 handle_msg(_Client, Msg, State) ->
-    error_logger:warning_msg("Unmatched msg: ~p~n", [Msg]),
+    wsdemo_logger:event({recv_message, self(), Ref},
     State.
 
 ws_info(Client, {timeout, _Ref, send_ping}, State) ->
