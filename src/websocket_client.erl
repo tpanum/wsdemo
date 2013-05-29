@@ -170,7 +170,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%--------------------------------------------------------------------
 initial_request() ->
     {_, _, MicroSecs} = erlang:now(),
-    io_lib:format("{\"command\":\"loogin\",\"params\":{\"username\":\"bjarke\",\"password\":\"12356\"},\"authd\":\"\",\"timestamp\":\"~p\"}\r\n", [MicroSecs]).
+    io_lib:format("{\"command\":\"login\",\"params\":{\"username\":\"bjarke\",\"password\":\"12356\"},\"auth\":\"\",\"timestamp\":\"~p\"}\r\n", [MicroSecs]).
 
 %% not enough data for a complete frame
 unframe(Data) when byte_size(Data) =:= 1 ->
